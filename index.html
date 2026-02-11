@@ -753,6 +753,7 @@
         }
 
         try {
+          // These keys MUST match the {{double_braces}} in your EmailJS dashboard
           const templateParams = {
             to_email: referrerData.email,
             referrer_name: referrerData.name,
@@ -765,16 +766,23 @@
             match_3_score: results[2].score,
           };
 
-          await emailjs.send(
+          console.log("Payload being sent:", templateParams);
+
+          const response = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
             templateParams,
           );
 
+          console.log("SUCCESS!", response.status, response.text);
           showNotification(`Success! Results sent to ${referrerData.name} 💕`);
         } catch (error) {
-          console.error("Email send failed:", error);
-          showNotification("Oops! Email failed. Check console.", "error");
+          console.error("EmailJS Error Details:", error);
+          // If it's still 418, check if your Service ID is active in the EmailJS dashboard
+          showNotification(
+            "Check EmailJS Service ID and Template ID matches.",
+            "error",
+          );
         }
       }
 
