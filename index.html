@@ -1,547 +1,724 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>💖 Love Compatibility Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
         }
-        
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            10%, 30% { transform: scale(0.9); }
-            20%, 40% { transform: scale(1.1); }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes heartbeat {
+        0%,
+        100% {
+          transform: scale(1);
         }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(100%); }
-            to { opacity: 1; transform: translateY(0); }
+        10%,
+        30% {
+          transform: scale(0.9);
         }
-        
-        @keyframes falling-hearts {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        20%,
+        40% {
+          transform: scale(1.1);
         }
-        
-        @keyframes result-reveal {
-            0% { transform: scale(0); opacity: 0; filter: blur(10px); }
-            60% { transform: scale(1.15); }
-            100% { transform: scale(1); opacity: 1; filter: blur(0); }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
-        
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(135deg, #ffd1dc 0%, #ffb6c1 25%, #ff69b4 50%, #ffb6c1 75%, #ffd1dc 100%);
-            background-size: 400% 400%;
-            animation: gradient-shift 15s ease infinite;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(100%);
         }
-        
-        .decorative-font {
-            font-family: 'Pacifico', cursive;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        .valentine-border {
-            border: 3px solid #ff1493;
-            border-radius: 25px;
-            position: relative;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 15px 35px rgba(255, 20, 147, 0.3);
+      }
+
+      @keyframes falling-hearts {
+        0% {
+          transform: translateY(-10vh) rotate(0deg);
+          opacity: 0;
         }
-        
-        .valentine-border::before {
-            content: '';
-            position: absolute;
-            inset: -3px;
-            background: linear-gradient(45deg, #ff69b4, #ff1493, #ff69b4);
-            border-radius: 25px;
-            opacity: 0.3;
-            filter: blur(15px);
-            z-index: -1;
+        10% {
+          opacity: 1;
         }
-        
-        .input-valentine {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #ff69b4;
-            color: #c71585;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            padding: 1rem 1.5rem;
-            border-radius: 15px;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+        90% {
+          opacity: 1;
         }
-        
-        .input-valentine:focus {
-            outline: none;
-            border-color: #ff1493;
-            background: white;
-            box-shadow: 0 5px 25px rgba(255, 20, 147, 0.4);
-            transform: translateY(-2px);
+        100% {
+          transform: translateY(110vh) rotate(360deg);
+          opacity: 0;
         }
-        
-        .input-valentine::placeholder {
-            color: #ffb6c1;
-            font-weight: 400;
+      }
+
+      @keyframes result-reveal {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+          filter: blur(10px);
         }
-        
-        .btn-valentine {
-            background: linear-gradient(135deg, #ff1493, #ff69b4);
-            border: none;
-            color: white;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            padding: 1.25rem 3rem;
-            border-radius: 50px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s;
-            box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
-            letter-spacing: 1px;
+        60% {
+          transform: scale(1.15);
         }
-        
-        .btn-valentine::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.6s;
+        100% {
+          transform: scale(1);
+          opacity: 1;
+          filter: blur(0);
         }
-        
-        .btn-valentine:hover::before {
-            left: 100%;
+      }
+
+      body {
+        font-family: "Quicksand", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #ffd1dc 0%,
+          #ffb6c1 25%,
+          #ff69b4 50%,
+          #ffb6c1 75%,
+          #ffd1dc 100%
+        );
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      @keyframes gradient-shift {
+        0%,
+        100% {
+          background-position: 0% 50%;
         }
-        
-        .btn-valentine:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
-            animation: heartbeat 1.5s infinite;
+        50% {
+          background-position: 100% 50%;
         }
-        
-        .btn-valentine:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, #ff69b4, #ffb6c1);
-        }
-        
-        .btn-secondary:hover {
-            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.6);
-        }
-        
-        .result-card {
-            animation: result-reveal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            background: rgba(255, 255, 255, 0.95);
-            border: 3px solid;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
-        }
-        
-        .result-percentage {
-            animation: result-reveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            font-size: 4rem;
-            background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 5px 10px rgba(255, 20, 147, 0.3));
-        }
-        
-        .falling-hearts-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .falling-heart {
-            position: absolute;
-            font-size: 20px;
-            animation: falling-hearts linear infinite;
-            opacity: 0.6;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, #ff1493, #ff69b4);
-            border: 3px solid #ff1493;
-            border-radius: 15px;
-            color: white;
-            padding: 1.25rem 2rem;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            box-shadow: 0 10px 40px rgba(255, 20, 147, 0.5);
-            z-index: 2000;
-            animation: slideUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .share-link-display {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px dashed #ff69b4;
-            border-radius: 10px;
-            color: #c71585;
-            padding: 1rem;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            word-break: break-all;
-            user-select: all;
-        }
-        
-        .page-transition {
-            animation: fadeIn 0.8s ease-out;
-        }
+      }
+
+      .decorative-font {
+        font-family: "Pacifico", cursive;
+      }
+
+      .valentine-border {
+        border: 3px solid #ff1493;
+        border-radius: 25px;
+        position: relative;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 15px 35px rgba(255, 20, 147, 0.3);
+      }
+
+      .valentine-border::before {
+        content: "";
+        position: absolute;
+        inset: -3px;
+        background: linear-gradient(45deg, #ff69b4, #ff1493, #ff69b4);
+        border-radius: 25px;
+        opacity: 0.3;
+        filter: blur(15px);
+        z-index: -1;
+      }
+
+      .input-valentine {
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px solid #ff69b4;
+        color: #c71585;
+        font-family: "Quicksand", sans-serif;
+        font-size: 1.25rem;
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        border-radius: 15px;
+        transition: all 0.3s;
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+      }
+
+      .input-valentine:focus {
+        outline: none;
+        border-color: #ff1493;
+        background: white;
+        box-shadow: 0 5px 25px rgba(255, 20, 147, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .input-valentine::placeholder {
+        color: #ffb6c1;
+        font-weight: 400;
+      }
+
+      .btn-valentine {
+        background: linear-gradient(135deg, #ff1493, #ff69b4);
+        border: none;
+        color: white;
+        font-family: "Quicksand", sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        padding: 1.25rem 3rem;
+        border-radius: 50px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s;
+        box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+        letter-spacing: 1px;
+      }
+
+      .btn-valentine::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        transition: left 0.6s;
+      }
+
+      .btn-valentine:hover::before {
+        left: 100%;
+      }
+
+      .btn-valentine:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+        animation: heartbeat 1.5s infinite;
+      }
+
+      .btn-valentine:active {
+        transform: translateY(-2px) scale(1.02);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #ff69b4, #ffb6c1);
+      }
+
+      .btn-secondary:hover {
+        box-shadow: 0 15px 40px rgba(255, 105, 180, 0.6);
+      }
+
+      .result-card {
+        animation: result-reveal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        background: rgba(255, 255, 255, 0.95);
+        border: 3px solid;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+      }
+
+      .result-percentage {
+        animation: result-reveal 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        font-size: 4rem;
+        background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 5px 10px rgba(255, 20, 147, 0.3));
+      }
+
+      .falling-hearts-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+
+      .falling-heart {
+        position: absolute;
+        font-size: 20px;
+        animation: falling-hearts linear infinite;
+        opacity: 0.6;
+      }
+
+      .notification {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        background: linear-gradient(135deg, #ff1493, #ff69b4);
+        border: 3px solid #ff1493;
+        border-radius: 15px;
+        color: white;
+        padding: 1.25rem 2rem;
+        font-family: "Quicksand", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        box-shadow: 0 10px 40px rgba(255, 20, 147, 0.5);
+        z-index: 2000;
+        animation: slideUp 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .share-link-display {
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px dashed #ff69b4;
+        border-radius: 10px;
+        color: #c71585;
+        padding: 1rem;
+        font-family: "Quicksand", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        word-break: break-all;
+        user-select: all;
+      }
+
+      .page-transition {
+        animation: fadeIn 0.8s ease-out;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Falling hearts background -->
     <div class="falling-hearts-bg" id="fallingHearts"></div>
-    
+
     <!-- Landing Page -->
-    <div id="landingPage" class="relative z-10 min-h-screen flex items-center justify-center px-4">
-        <div class="container max-w-2xl">
-            <div class="text-center mb-12 page-transition">
-                <h1 class="decorative-font text-5xl md:text-7xl mb-4" style="color: #ff1493; text-shadow: 3px 3px 6px rgba(255, 20, 147, 0.3);">
-                    Love Compatibility
-                </h1>
-                <p class="text-2xl md:text-3xl font-semibold" style="color: #c71585;">
-                    💕 Find Your Perfect Match 💕
-                </p>
-                
-                <!-- Referrer notification -->
-                <div id="referrerNotice" class="hidden valentine-border p-6 mt-8 page-transition" style="animation-delay: 0.2s;">
-                    <p class="text-2xl font-semibold" style="color: #ff1493;">
-                        💌 Invited by: <span id="referrerName" class="decorative-font text-3xl" style="color: #c71585;"></span>
-                    </p>
-                    <p class="text-lg mt-2" style="color: #ff69b4;">
-                        Calculate your results to share with them!
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Calculator Form -->
-            <div class="valentine-border p-8 md:p-12 page-transition" style="animation-delay: 0.3s;">
-                <form id="calculatorForm" class="space-y-6">
-                    <div>
-                        <label class="block text-xl md:text-2xl font-bold mb-3" style="color: #c71585;">Your Name:</label>
-                        <input type="text" id="yourName" class="input-valentine w-full" placeholder="Enter your name..." required>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <label class="block text-xl md:text-2xl font-bold mb-3" style="color: #c71585;">Compare with:</label>
-                        <input type="text" id="name1" class="input-valentine w-full" placeholder="First person..." required>
-                        <input type="text" id="name2" class="input-valentine w-full" placeholder="Second person..." required>
-                        <input type="text" id="name3" class="input-valentine w-full" placeholder="Third person..." required>
-                    </div>
-                    
-                    <div class="text-center pt-6">
-                        <button type="submit" class="btn-valentine">
-                            💖 Calculate Love Match 💖
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <div
+      id="landingPage"
+      class="relative z-10 min-h-screen flex items-center justify-center px-4"
+    >
+      <div class="container max-w-2xl">
+        <div class="text-center mb-12 page-transition">
+          <h1
+            class="decorative-font text-5xl md:text-7xl mb-4"
+            style="
+              color: #ff1493;
+              text-shadow: 3px 3px 6px rgba(255, 20, 147, 0.3);
+            "
+          >
+            Love Compatibility
+          </h1>
+          <p class="text-2xl md:text-3xl font-semibold" style="color: #c71585">
+            💕 Find Your Perfect Match 💕
+          </p>
+
+          <!-- Referrer notification -->
+          <div
+            id="referrerNotice"
+            class="hidden valentine-border p-6 mt-8 page-transition"
+            style="animation-delay: 0.2s"
+          >
+            <p class="text-2xl font-semibold" style="color: #ff1493">
+              💌 Invited by:
+              <span
+                id="referrerName"
+                class="decorative-font text-3xl"
+                style="color: #c71585"
+              ></span>
+            </p>
+            <p class="text-lg mt-2" style="color: #ff69b4">
+              Calculate your results to share with them!
+            </p>
+          </div>
         </div>
+
+        <!-- Calculator Form -->
+        <div
+          class="valentine-border p-8 md:p-12 page-transition"
+          style="animation-delay: 0.3s"
+        >
+          <form id="calculatorForm" class="space-y-6">
+            <div>
+              <label
+                class="block text-xl md:text-2xl font-bold mb-3"
+                style="color: #c71585"
+                >Your Name:</label
+              >
+              <input
+                type="text"
+                id="yourName"
+                class="input-valentine w-full"
+                placeholder="Enter your name..."
+                required
+              />
+            </div>
+
+            <div class="space-y-4">
+              <label
+                class="block text-xl md:text-2xl font-bold mb-3"
+                style="color: #c71585"
+                >Compare with:</label
+              >
+              <input
+                type="text"
+                id="name1"
+                class="input-valentine w-full"
+                placeholder="First person..."
+                required
+              />
+              <input
+                type="text"
+                id="name2"
+                class="input-valentine w-full"
+                placeholder="Second person..."
+                required
+              />
+              <input
+                type="text"
+                id="name3"
+                class="input-valentine w-full"
+                placeholder="Third person..."
+                required
+              />
+            </div>
+
+            <div class="text-center pt-6">
+              <button type="submit" class="btn-valentine">
+                💖 Calculate Love Match 💖
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Results Page -->
     <div id="resultsPage" class="hidden relative z-10 min-h-screen px-4 py-12">
-        <div class="container mx-auto max-w-4xl">
-            <!-- Header -->
-            <div class="text-center mb-12 page-transition">
-                <h1 class="decorative-font text-4xl md:text-6xl mb-4" style="color: #ff1493;">
-                    💕 Your Love Results 💕
-                </h1>
-            </div>
-            
-            <!-- Results -->
-            <div id="resultsContainer" class="space-y-6 mb-12"></div>
-            
-            <!-- Action Buttons -->
-            <div class="text-center flex flex-wrap gap-4 justify-center page-transition">
-                <button onclick="resetCalculator()" class="btn-valentine btn-secondary">
-                    🔄 Calculate Again
-                </button>
-                <button onclick="showSharePage()" class="btn-valentine">
-                    💌 Share with Friends
-                </button>
-            </div>
+      <div class="container mx-auto max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-12 page-transition">
+          <h1
+            class="decorative-font text-4xl md:text-6xl mb-4"
+            style="color: #ff1493"
+          >
+            💕 Your Love Results 💕
+          </h1>
         </div>
+
+        <!-- Results -->
+        <div id="resultsContainer" class="space-y-6 mb-12"></div>
+
+        <!-- Action Buttons -->
+        <div
+          class="text-center flex flex-wrap gap-4 justify-center page-transition"
+        >
+          <button
+            onclick="resetCalculator()"
+            class="btn-valentine btn-secondary"
+          >
+            🔄 Calculate Again
+          </button>
+          <button onclick="showSharePage()" class="btn-valentine">
+            💌 Share with Friends
+          </button>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Share Page -->
     <div id="sharePage" class="hidden relative z-10 min-h-screen px-4 py-12">
-        <div class="container mx-auto max-w-3xl">
-            <div class="text-center mb-12 page-transition">
-                <h1 class="decorative-font text-4xl md:text-6xl mb-4" style="color: #ff1493;">
-                    💌 Share & Track Results 💌
-                </h1>
-                <p class="text-xl md:text-2xl font-semibold" style="color: #c71585;">
-                    Generate a special link to share!
-                </p>
-                <p class="text-lg mt-3" style="color: #ff69b4;">
-                    When friends use your link, you'll receive their results via email 💖
-                </p>
-            </div>
-            
-            <div class="valentine-border p-8 md:p-12 mb-8 page-transition" style="animation-delay: 0.2s;">
-                <form id="shareForm" class="space-y-6">
-                    <div>
-                        <label class="block text-xl md:text-2xl font-bold mb-3" style="color: #c71585;">Your Name:</label>
-                        <input type="text" id="shareName" class="input-valentine w-full" placeholder="Your name..." required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-xl md:text-2xl font-bold mb-3" style="color: #ff1493;">Your Email:</label>
-                        <input type="email" id="shareEmail" class="input-valentine w-full" placeholder="your@email.com" required>
-                    </div>
-                    
-                    <div class="text-center pt-4">
-                        <button type="submit" class="btn-valentine">
-                            ✨ Generate My Link ✨
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- Generated Link -->
-                <div id="generatedLinkSection" class="hidden mt-8 page-transition">
-                    <h3 class="text-xl md:text-2xl font-bold mb-4" style="color: #ff1493;">Your Shareable Link:</h3>
-                    <div class="share-link-display mb-4" id="shareableLink"></div>
-                    <button onclick="copyLink()" class="btn-valentine text-base py-3 px-6">
-                        📋 Copy Link
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Privacy Info -->
-            <div class="valentine-border p-6 md:p-8 page-transition" style="animation-delay: 0.3s;">
-                <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" style="color: #ff1493;">
-                    🔐 Privacy & Security
-                </h3>
-                <div class="space-y-3 text-base md:text-lg" style="color: #c71585;">
-                    <p>✨ Your email is encoded and never visible in plain text</p>
-                    <p>💖 Only EmailJS processes your email server-side</p>
-                    <p>🎀 Friends see only your name, never your email</p>
-                    <p>💝 Results are sent privately to your inbox</p>
-                </div>
-            </div>
-            
-            <div class="text-center mt-8">
-                <button onclick="showLandingPage()" class="btn-valentine btn-secondary">
-                    ← Back to Calculator
-                </button>
-            </div>
+      <div class="container mx-auto max-w-3xl">
+        <div class="text-center mb-12 page-transition">
+          <h1
+            class="decorative-font text-4xl md:text-6xl mb-4"
+            style="color: #ff1493"
+          >
+            💌 Share & Track Results 💌
+          </h1>
+          <p class="text-xl md:text-2xl font-semibold" style="color: #c71585">
+            Generate a special link to share!
+          </p>
+          <p class="text-lg mt-3" style="color: #ff69b4">
+            When friends use your link, you'll receive their results via email
+            💖
+          </p>
         </div>
+
+        <div
+          class="valentine-border p-8 md:p-12 mb-8 page-transition"
+          style="animation-delay: 0.2s"
+        >
+          <form id="shareForm" class="space-y-6">
+            <div>
+              <label
+                class="block text-xl md:text-2xl font-bold mb-3"
+                style="color: #c71585"
+                >Your Name:</label
+              >
+              <input
+                type="text"
+                id="shareName"
+                class="input-valentine w-full"
+                placeholder="Your name..."
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                class="block text-xl md:text-2xl font-bold mb-3"
+                style="color: #ff1493"
+                >Your Email:</label
+              >
+              <input
+                type="email"
+                id="shareEmail"
+                class="input-valentine w-full"
+                placeholder="your@email.com"
+                required
+              />
+            </div>
+
+            <div class="text-center pt-4">
+              <button type="submit" class="btn-valentine">
+                ✨ Generate My Link ✨
+              </button>
+            </div>
+          </form>
+
+          <!-- Generated Link -->
+          <div id="generatedLinkSection" class="hidden mt-8 page-transition">
+            <h3
+              class="text-xl md:text-2xl font-bold mb-4"
+              style="color: #ff1493"
+            >
+              Your Shareable Link:
+            </h3>
+            <div class="share-link-display mb-4" id="shareableLink"></div>
+            <button
+              onclick="copyLink()"
+              class="btn-valentine text-base py-3 px-6"
+            >
+              📋 Copy Link
+            </button>
+          </div>
+        </div>
+
+        <!-- Privacy Info -->
+        <div
+          class="valentine-border p-6 md:p-8 page-transition"
+          style="animation-delay: 0.3s"
+        >
+          <h3
+            class="text-xl md:text-2xl font-bold mb-4 text-center"
+            style="color: #ff1493"
+          >
+            🔐 Privacy & Security
+          </h3>
+          <div class="space-y-3 text-base md:text-lg" style="color: #c71585">
+            <p>✨ Your email is encoded and never visible in plain text</p>
+            <p>💖 Only EmailJS processes your email server-side</p>
+            <p>🎀 Friends see only your name, never your email</p>
+            <p>💝 Results are sent privately to your inbox</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-8">
+          <button
+            onclick="showLandingPage()"
+            class="btn-valentine btn-secondary"
+          >
+            ← Back to Calculator
+          </button>
+        </div>
+      </div>
     </div>
-    
+
     <!-- Footer -->
     <footer class="relative z-10 text-center py-8">
-        <p class="decorative-font text-2xl md:text-3xl" style="color: #ff1493; text-shadow: 2px 2px 4px rgba(255, 20, 147, 0.3);">
-            Made with 💖 for Valentine's Day
-        </p>
+      <p
+        class="decorative-font text-2xl md:text-3xl"
+        style="color: #ff1493; text-shadow: 2px 2px 4px rgba(255, 20, 147, 0.3)"
+      >
+        Made with 💖 for Valentine's Day
+      </p>
     </footer>
-    
+
     <script>
-        // ===========================
-        // EMAILJS CONFIGURATION
-        // ===========================
-        // Replace these with your actual EmailJS credentials
-        const EMAILJS_PUBLIC_KEY = 'm7h_MiNo_6KcF8tdZ'; // From EmailJS Dashboard → Account → General
-        const EMAILJS_SERVICE_ID = 'service_56qeb8p'; // Your email service ID
-        const EMAILJS_TEMPLATE_ID = 'template_vza2epc'; // Your template ID
-        
-        // Initialize EmailJS only if configured
-        if (EMAILJS_PUBLIC_KEY !== 'm7h_MiNo_6KcF8tdZ') {
-            try {
-                emailjs.init(EMAILJS_PUBLIC_KEY);
-            } catch (e) {
-                console.warn('EmailJS initialization failed:', e);
+      // ===========================
+      // EMAILJS CONFIGURATION
+      // ===========================
+      // Replace these with your actual EmailJS credentials
+      const EMAILJS_PUBLIC_KEY = "m7h_MiNo_6KcF8tdZ"; // From EmailJS Dashboard → Account → General
+      const EMAILJS_SERVICE_ID = "service_56qeb8p"; // Your email service ID
+      const EMAILJS_TEMPLATE_ID = "template_vza2epc"; // Your template ID
+
+      // Initialize EmailJS only if configured
+      try {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+        console.log("EmailJS Initialized with key:", EMAILJS_PUBLIC_KEY);
+      } catch (e) {
+        console.error("EmailJS initialization failed:", e);
+      }
+
+      // ===========================
+      // FALLING HEARTS BACKGROUND
+      // ===========================
+      function createFallingHearts() {
+        const heartsContainer = document.getElementById("fallingHearts");
+        const hearts = ["💕", "💖", "💗", "💝", "💞", "❤️", "🌹"];
+
+        setInterval(() => {
+          const heart = document.createElement("div");
+          heart.className = "falling-heart";
+          heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          heart.style.left = Math.random() * 100 + "%";
+          heart.style.animationDuration = Math.random() * 3 + 5 + "s";
+          heart.style.fontSize = Math.random() * 20 + 15 + "px";
+          heartsContainer.appendChild(heart);
+
+          setTimeout(() => heart.remove(), 8000);
+        }, 500);
+      }
+      createFallingHearts();
+
+      // ===========================
+      // PAGE NAVIGATION
+      // ===========================
+      function showLandingPage() {
+        document.getElementById("landingPage").classList.remove("hidden");
+        document.getElementById("resultsPage").classList.add("hidden");
+        document.getElementById("sharePage").classList.add("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function showResultsPage() {
+        document.getElementById("landingPage").classList.add("hidden");
+        document.getElementById("resultsPage").classList.remove("hidden");
+        document.getElementById("sharePage").classList.add("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function showSharePage() {
+        document.getElementById("landingPage").classList.add("hidden");
+        document.getElementById("resultsPage").classList.add("hidden");
+        document.getElementById("sharePage").classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function resetCalculator() {
+        document.getElementById("calculatorForm").reset();
+        showLandingPage();
+      }
+
+      // ===========================
+      // URL PARAMETER HANDLING
+      // ===========================
+      let referrerData = null;
+
+      function checkForReferrer() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encoded = urlParams.get("ref");
+
+        if (encoded) {
+          try {
+            const decoded = atob(encoded);
+            const [name, email] = decoded.split("|");
+
+            if (name && email) {
+              referrerData = { name, email };
+              document.getElementById("referrerName").textContent = name;
+              document
+                .getElementById("referrerNotice")
+                .classList.remove("hidden");
             }
+          } catch (e) {
+            console.error("Invalid referrer data");
+          }
         }
-        
-        // ===========================
-        // FALLING HEARTS BACKGROUND
-        // ===========================
-        function createFallingHearts() {
-            const heartsContainer = document.getElementById('fallingHearts');
-            const hearts = ['💕', '💖', '💗', '💝', '💞', '❤️', '🌹'];
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'falling-heart';
-                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                heartsContainer.appendChild(heart);
-                
-                setTimeout(() => heart.remove(), 8000);
-            }, 500);
-        }
-        createFallingHearts();
-        
-        // ===========================
-        // PAGE NAVIGATION
-        // ===========================
-        function showLandingPage() {
-            document.getElementById('landingPage').classList.remove('hidden');
-            document.getElementById('resultsPage').classList.add('hidden');
-            document.getElementById('sharePage').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function showResultsPage() {
-            document.getElementById('landingPage').classList.add('hidden');
-            document.getElementById('resultsPage').classList.remove('hidden');
-            document.getElementById('sharePage').classList.add('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function showSharePage() {
-            document.getElementById('landingPage').classList.add('hidden');
-            document.getElementById('resultsPage').classList.add('hidden');
-            document.getElementById('sharePage').classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        
-        function resetCalculator() {
-            document.getElementById('calculatorForm').reset();
-            showLandingPage();
-        }
-        
-        // ===========================
-        // URL PARAMETER HANDLING
-        // ===========================
-        let referrerData = null;
-        
-        function checkForReferrer() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encoded = urlParams.get('ref');
-            
-            if (encoded) {
-                try {
-                    const decoded = atob(encoded);
-                    const [name, email] = decoded.split('|');
-                    
-                    if (name && email) {
-                        referrerData = { name, email };
-                        document.getElementById('referrerName').textContent = name;
-                        document.getElementById('referrerNotice').classList.remove('hidden');
-                    }
-                } catch (e) {
-                    console.error('Invalid referrer data');
-                }
-            }
-        }
-        checkForReferrer();
-        
-        // ===========================
-        // CALCULATOR LOGIC
-        // ===========================
-        document.getElementById('calculatorForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const yourName = document.getElementById('yourName').value;
-            const name1 = document.getElementById('name1').value;
-            const name2 = document.getElementById('name2').value;
-            const name3 = document.getElementById('name3').value;
-            
-            // Generate random percentages
-            const results = [
-                { name: name1, score: Math.floor(Math.random() * 100) + 1 },
-                { name: name2, score: Math.floor(Math.random() * 100) + 1 },
-                { name: name3, score: Math.floor(Math.random() * 100) + 1 }
-            ];
-            
-            // Display results
-            displayResults(yourName, results);
-            
-            // Show results page
-            showResultsPage();
-            
-            // If this is a guest (has referrer data), send email
-            if (referrerData) {
-                await sendResultsToReferrer(yourName, results);
-            }
+      }
+      checkForReferrer();
+
+      // ===========================
+      // CALCULATOR LOGIC
+      // ===========================
+      document
+        .getElementById("calculatorForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const yourName = document.getElementById("yourName").value;
+          const name1 = document.getElementById("name1").value;
+          const name2 = document.getElementById("name2").value;
+          const name3 = document.getElementById("name3").value;
+
+          // Generate random percentages
+          const results = [
+            { name: name1, score: Math.floor(Math.random() * 100) + 1 },
+            { name: name2, score: Math.floor(Math.random() * 100) + 1 },
+            { name: name3, score: Math.floor(Math.random() * 100) + 1 },
+          ];
+
+          // Display results
+          displayResults(yourName, results);
+
+          // Show results page
+          showResultsPage();
+
+          // If this is a guest (has referrer data), send email
+          if (referrerData) {
+            await sendResultsToReferrer(yourName, results);
+          }
         });
-        
-        function displayResults(yourName, results) {
-            const resultsContainer = document.getElementById('resultsContainer');
-            resultsContainer.innerHTML = '';
-            
-            results.forEach((result, index) => {
-                const resultCard = document.createElement('div');
-                resultCard.className = 'result-card p-6 page-transition';
-                resultCard.style.animationDelay = (index * 0.15) + 's';
-                
-                // Determine border color and emoji based on score
-                let borderColor = '#ff1493';
-                let emoji = '💕';
-                let message = '';
-                
-                if (result.score >= 90) {
-                    borderColor = '#ff1493';
-                    emoji = '💖';
-                    message = 'Soulmates Forever!';
-                } else if (result.score >= 70) {
-                    borderColor = '#ff69b4';
-                    emoji = '💕';
-                    message = 'Perfect Match!';
-                } else if (result.score >= 50) {
-                    borderColor = '#ffb6c1';
-                    emoji = '💗';
-                    message = 'Great Chemistry!';
-                } else if (result.score >= 30) {
-                    borderColor = '#dda0dd';
-                    emoji = '💝';
-                    message = 'Good Friends!';
-                } else {
-                    borderColor = '#d8bfd8';
-                    emoji = '💙';
-                    message = 'Just Friends';
-                }
-                
-                resultCard.style.borderColor = borderColor;
-                
-                resultCard.innerHTML = `
+
+      function displayResults(yourName, results) {
+        const resultsContainer = document.getElementById("resultsContainer");
+        resultsContainer.innerHTML = "";
+
+        results.forEach((result, index) => {
+          const resultCard = document.createElement("div");
+          resultCard.className = "result-card p-6 page-transition";
+          resultCard.style.animationDelay = index * 0.15 + "s";
+
+          // Determine border color and emoji based on score
+          let borderColor = "#ff1493";
+          let emoji = "💕";
+          let message = "";
+
+          if (result.score >= 90) {
+            borderColor = "#ff1493";
+            emoji = "💖";
+            message = "Soulmates Forever!";
+          } else if (result.score >= 70) {
+            borderColor = "#ff69b4";
+            emoji = "💕";
+            message = "Perfect Match!";
+          } else if (result.score >= 50) {
+            borderColor = "#ffb6c1";
+            emoji = "💗";
+            message = "Great Chemistry!";
+          } else if (result.score >= 30) {
+            borderColor = "#dda0dd";
+            emoji = "💝";
+            message = "Good Friends!";
+          } else {
+            borderColor = "#d8bfd8";
+            emoji = "💙";
+            message = "Just Friends";
+          }
+
+          resultCard.style.borderColor = borderColor;
+
+          resultCard.innerHTML = `
                     <div class="flex items-center justify-between flex-wrap gap-4">
                         <div class="flex-1 min-w-[200px]">
                             <div class="text-2xl md:text-3xl font-bold mb-2" style="color: #c71585;">
@@ -556,99 +733,112 @@
                         </div>
                     </div>
                 `;
-                
-                resultsContainer.appendChild(resultCard);
-            });
-        }
-        
-        // ===========================
-        // EMAIL SENDING (EmailJS)
-        // ===========================
-        async function sendResultsToReferrer(guestName, results) {
-            // Check if EmailJS is configured
-            if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY' || 
-                EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' || 
-                EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID') {
-                console.log('EmailJS not configured. Email sending skipped.');
-                return;
-            }
-            
-            try {
-                const templateParams = {
-                    to_email: referrerData.email,
-                    referrer_name: referrerData.name,
-                    guest_name: guestName,
-                    match_1_name: results[0].name,
-                    match_1_score: results[0].score,
-                    match_2_name: results[1].name,
-                    match_2_score: results[1].score,
-                    match_3_name: results[2].name,
-                    match_3_score: results[2].score
-                };
-                
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-                
-                showNotification(`Success! Results sent to ${referrerData.name} 💕`);
-            } catch (error) {
-                console.error('Email send failed:', error);
-                showNotification('Oops! Email failed. Check console.', 'error');
-            }
-        }
-        
-        function showNotification(message, type = 'success') {
-            // Remove existing notifications
-            const existing = document.querySelectorAll('.notification');
-            existing.forEach(n => n.remove());
-            
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            if (type === 'error') {
-                notification.style.background = 'linear-gradient(135deg, #dc143c, #ff1493)';
-                notification.style.borderColor = '#dc143c';
-            }
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateY(-20px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 5000);
-        }
-        
-        // ===========================
-        // SHARE LINK GENERATION
-        // ===========================
-        document.getElementById('shareForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('shareName').value;
-            const email = document.getElementById('shareEmail').value;
-            
-            // Encode name and email in Base64
-            const data = `${name}|${email}`;
-            const encoded = btoa(data);
-            
-            // Generate shareable URL
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?ref=${encoded}`;
-            
-            // Display the link
-            document.getElementById('shareableLink').textContent = shareUrl;
-            document.getElementById('generatedLinkSection').classList.remove('hidden');
-            
-            // Scroll to link
-            setTimeout(() => {
-                document.getElementById('generatedLinkSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+
+          resultsContainer.appendChild(resultCard);
         });
-        
-        function copyLink() {
-            const linkText = document.getElementById('shareableLink').textContent;
-            navigator.clipboard.writeText(linkText).then(() => {
-                showNotification('Link copied! Share it with your friends 💌');
-            });
+      }
+
+      // ===========================
+      // EMAIL SENDING (EmailJS)
+      // ===========================
+      async function sendResultsToReferrer(guestName, results) {
+        // Check if EmailJS is configured
+        if (
+          EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" ||
+          EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
+          EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID"
+        ) {
+          console.log("EmailJS not configured. Email sending skipped.");
+          return;
         }
+
+        try {
+          const templateParams = {
+            to_email: referrerData.email,
+            referrer_name: referrerData.name,
+            guest_name: guestName,
+            match_1_name: results[0].name,
+            match_1_score: results[0].score,
+            match_2_name: results[1].name,
+            match_2_score: results[1].score,
+            match_3_name: results[2].name,
+            match_3_score: results[2].score,
+          };
+
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            templateParams,
+          );
+
+          showNotification(`Success! Results sent to ${referrerData.name} 💕`);
+        } catch (error) {
+          console.error("Email send failed:", error);
+          showNotification("Oops! Email failed. Check console.", "error");
+        }
+      }
+
+      function showNotification(message, type = "success") {
+        // Remove existing notifications
+        const existing = document.querySelectorAll(".notification");
+        existing.forEach((n) => n.remove());
+
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        if (type === "error") {
+          notification.style.background =
+            "linear-gradient(135deg, #dc143c, #ff1493)";
+          notification.style.borderColor = "#dc143c";
+        }
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+          notification.style.opacity = "0";
+          notification.style.transform = "translateY(-20px)";
+          setTimeout(() => notification.remove(), 300);
+        }, 5000);
+      }
+
+      // ===========================
+      // SHARE LINK GENERATION
+      // ===========================
+      document
+        .getElementById("shareForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("shareName").value;
+          const email = document.getElementById("shareEmail").value;
+
+          // Encode name and email in Base64
+          const data = `${name}|${email}`;
+          const encoded = btoa(data);
+
+          // Generate shareable URL
+          const baseUrl = window.location.origin + window.location.pathname;
+          const shareUrl = `${baseUrl}?ref=${encoded}`;
+
+          // Display the link
+          document.getElementById("shareableLink").textContent = shareUrl;
+          document
+            .getElementById("generatedLinkSection")
+            .classList.remove("hidden");
+
+          // Scroll to link
+          setTimeout(() => {
+            document
+              .getElementById("generatedLinkSection")
+              .scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }, 100);
+        });
+
+      function copyLink() {
+        const linkText = document.getElementById("shareableLink").textContent;
+        navigator.clipboard.writeText(linkText).then(() => {
+          showNotification("Link copied! Share it with your friends 💌");
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
