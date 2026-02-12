@@ -553,20 +553,23 @@
       </p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
       // ===========================
       // EMAILJS CONFIGURATION
       // ===========================
-      // Replace these with your actual EmailJS credentials
-      const EMAILJS_PUBLIC_KEY = "m7h_MiNo_6KcF8tdZ"; // From EmailJS Dashboard → Account → General
-      const EMAILJS_SERVICE_ID = "service_56qeb8p"; // Your email service ID
-      // const EMAILJS_TEMPLATE_ID = "template_a030vgd"; // Your template ID
-      const EMAILJS_TEMPLATE_ID = "template_edvo0k6"; // Your template ID
+      const EMAILJS_PUBLIC_KEY = "m7h_MiNo_6KcF8tdZ"; 
+      const EMAILJS_SERVICE_ID = "service_56qeb8p";   
+      
+      // 🔴 TODO: REPLACE THIS WITH THE ID FROM YOUR 'SETTINGS' TAB 🔴
+      const EMAILJS_TEMPLATE_ID = "REPLACE_WITH_REAL_ID_FROM_DASHBOARD"; 
 
-      // Initialize EmailJS only if configured
+      // Initialize EmailJS (Modern v4 Syntax)
       try {
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-        console.log("EmailJS Initialized with key:", EMAILJS_PUBLIC_KEY);
+        emailjs.init({
+          publicKey: EMAILJS_PUBLIC_KEY,
+        });
+        console.log("EmailJS Initialized");
       } catch (e) {
         console.error("EmailJS initialization failed:", e);
       }
@@ -638,9 +641,7 @@
             if (name && email) {
               referrerData = { name, email };
               document.getElementById("referrerName").textContent = name;
-              document
-                .getElementById("referrerNotice")
-                .classList.remove("hidden");
+              document.getElementById("referrerNotice").classList.remove("hidden");
             }
           } catch (e) {
             console.error("Invalid referrer data");
@@ -652,9 +653,7 @@
       // ===========================
       // CALCULATOR LOGIC
       // ===========================
-      document
-        .getElementById("calculatorForm")
-        .addEventListener("submit", async function (e) {
+      document.getElementById("calculatorForm").addEventListener("submit", async function (e) {
           e.preventDefault();
 
           const yourName = document.getElementById("yourName").value;
@@ -669,13 +668,9 @@
             { name: name3, score: Math.floor(Math.random() * 100) + 1 },
           ];
 
-          // Display results
           displayResults(yourName, results);
-
-          // Show results page
           showResultsPage();
 
-          // If this is a guest (has referrer data), send email
           if (referrerData) {
             await sendResultsToReferrer(yourName, results);
           }
@@ -690,7 +685,6 @@
           resultCard.className = "result-card p-6 page-transition";
           resultCard.style.animationDelay = index * 0.15 + "s";
 
-          // Determine border color and emoji based on score
           let borderColor = "#ff1493";
           let emoji = "💕";
           let message = "";
@@ -743,18 +737,7 @@
       // EMAIL SENDING (EmailJS)
       // ===========================
       async function sendResultsToReferrer(guestName, results) {
-        // Check if EmailJS is configured
-        if (
-          EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" ||
-          EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
-          EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID"
-        ) {
-          console.log("EmailJS not configured. Email sending skipped.");
-          return;
-        }
-
         try {
-          // These keys MUST match the {{double_braces}} in your EmailJS dashboard
           const templateParams = {
             to_email: referrerData.email,
             referrer_name: referrerData.name,
@@ -772,31 +755,29 @@
           const response = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
-            templateParams,
+            templateParams
           );
 
           console.log("SUCCESS!", response.status, response.text);
           showNotification(`Success! Results sent to ${referrerData.name} 💕`);
         } catch (error) {
           console.error("EmailJS Error Details:", error);
-          // If it's still 418, check if your Service ID is active in the EmailJS dashboard
-          showNotification(
-            "Check EmailJS Service ID and Template ID matches.",
-            "error",
-          );
+          if (error.status === 400 || error.status === 418) {
+             showNotification("Error: Check Template ID in code!", "error");
+          } else {
+             showNotification("Email sending failed.", "error");
+          }
         }
       }
 
       function showNotification(message, type = "success") {
-        // Remove existing notifications
         const existing = document.querySelectorAll(".notification");
         existing.forEach((n) => n.remove());
 
         const notification = document.createElement("div");
         notification.className = "notification";
         if (type === "error") {
-          notification.style.background =
-            "linear-gradient(135deg, #dc143c, #ff1493)";
+          notification.style.background = "linear-gradient(135deg, #dc143c, #ff1493)";
           notification.style.borderColor = "#dc143c";
         }
         notification.textContent = message;
@@ -812,33 +793,21 @@
       // ===========================
       // SHARE LINK GENERATION
       // ===========================
-      document
-        .getElementById("shareForm")
-        .addEventListener("submit", function (e) {
+      document.getElementById("shareForm").addEventListener("submit", function (e) {
           e.preventDefault();
 
           const name = document.getElementById("shareName").value;
           const email = document.getElementById("shareEmail").value;
-
-          // Encode name and email in Base64
           const data = `${name}|${email}`;
           const encoded = btoa(data);
-
-          // Generate shareable URL
           const baseUrl = window.location.origin + window.location.pathname;
           const shareUrl = `${baseUrl}?ref=${encoded}`;
 
-          // Display the link
           document.getElementById("shareableLink").textContent = shareUrl;
-          document
-            .getElementById("generatedLinkSection")
-            .classList.remove("hidden");
+          document.getElementById("generatedLinkSection").classList.remove("hidden");
 
-          // Scroll to link
           setTimeout(() => {
-            document
-              .getElementById("generatedLinkSection")
-              .scrollIntoView({ behavior: "smooth", block: "nearest" });
+            document.getElementById("generatedLinkSection").scrollIntoView({ behavior: "smooth", block: "nearest" });
           }, 100);
         });
 
