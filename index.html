@@ -558,11 +558,9 @@
       // ===========================
       // EMAILJS CONFIGURATION
       // ===========================
-      const EMAILJS_PUBLIC_KEY = "m7h_MiNo_6KcF8tdZ"; 
-      const EMAILJS_SERVICE_ID = "service_56qeb8p";   
-      
-      // 🔴 TODO: REPLACE THIS WITH THE ID FROM YOUR 'SETTINGS' TAB 🔴
-      const EMAILJS_TEMPLATE_ID = "REPLACE_WITH_REAL_ID_FROM_DASHBOARD"; 
+      const EMAILJS_PUBLIC_KEY = "m7h_MiNo_6KcF8tdZ";
+      const EMAILJS_SERVICE_ID = "service_56qeb8p";
+      const EMAILJS_TEMPLATE_ID = "template_a030vgd";
 
       // Initialize EmailJS (Modern v4 Syntax)
       try {
@@ -641,7 +639,9 @@
             if (name && email) {
               referrerData = { name, email };
               document.getElementById("referrerName").textContent = name;
-              document.getElementById("referrerNotice").classList.remove("hidden");
+              document
+                .getElementById("referrerNotice")
+                .classList.remove("hidden");
             }
           } catch (e) {
             console.error("Invalid referrer data");
@@ -653,7 +653,9 @@
       // ===========================
       // CALCULATOR LOGIC
       // ===========================
-      document.getElementById("calculatorForm").addEventListener("submit", async function (e) {
+      document
+        .getElementById("calculatorForm")
+        .addEventListener("submit", async function (e) {
           e.preventDefault();
 
           const yourName = document.getElementById("yourName").value;
@@ -752,10 +754,17 @@
 
           console.log("Payload being sent:", templateParams);
 
+          //const response = await emailjs.send(
+          //  EMAILJS_SERVICE_ID,
+          //  EMAILJS_TEMPLATE_ID,
+          //   templateParams
+          // );
+
           const response = await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            templateParams
+            "service_56qeb8p", // Service ID
+            "template_a030vgd", // Template ID
+            templateParams,
+            "m7h_MiNo_6KcF8tdZ", // Public Key (Passed as 4th argument)
           );
 
           console.log("SUCCESS!", response.status, response.text);
@@ -763,9 +772,9 @@
         } catch (error) {
           console.error("EmailJS Error Details:", error);
           if (error.status === 400 || error.status === 418) {
-             showNotification("Error: Check Template ID in code!", "error");
+            showNotification("Error: Check Template ID in code!", "error");
           } else {
-             showNotification("Email sending failed.", "error");
+            showNotification("Email sending failed.", "error");
           }
         }
       }
@@ -777,7 +786,8 @@
         const notification = document.createElement("div");
         notification.className = "notification";
         if (type === "error") {
-          notification.style.background = "linear-gradient(135deg, #dc143c, #ff1493)";
+          notification.style.background =
+            "linear-gradient(135deg, #dc143c, #ff1493)";
           notification.style.borderColor = "#dc143c";
         }
         notification.textContent = message;
@@ -793,7 +803,9 @@
       // ===========================
       // SHARE LINK GENERATION
       // ===========================
-      document.getElementById("shareForm").addEventListener("submit", function (e) {
+      document
+        .getElementById("shareForm")
+        .addEventListener("submit", function (e) {
           e.preventDefault();
 
           const name = document.getElementById("shareName").value;
@@ -804,10 +816,14 @@
           const shareUrl = `${baseUrl}?ref=${encoded}`;
 
           document.getElementById("shareableLink").textContent = shareUrl;
-          document.getElementById("generatedLinkSection").classList.remove("hidden");
+          document
+            .getElementById("generatedLinkSection")
+            .classList.remove("hidden");
 
           setTimeout(() => {
-            document.getElementById("generatedLinkSection").scrollIntoView({ behavior: "smooth", block: "nearest" });
+            document
+              .getElementById("generatedLinkSection")
+              .scrollIntoView({ behavior: "smooth", block: "nearest" });
           }, 100);
         });
 
