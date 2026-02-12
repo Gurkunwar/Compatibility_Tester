@@ -3,14 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>💖 Love Compatibility Calculator</title>
+    <title>Love Compatibility Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>"
+    />
     <style>
+      .fixed-gradient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background: linear-gradient(
+          135deg,
+          #ffd1dc 0%,
+          #ffb6c1 25%,
+          #ff69b4 50%,
+          #ffb6c1 75%,
+          #ffd1dc 100%
+        );
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+      }
       @keyframes float {
         0%,
         100% {
@@ -93,16 +115,6 @@
 
       body {
         font-family: "Quicksand", sans-serif;
-        background: linear-gradient(
-          135deg,
-          #ffd1dc 0%,
-          #ffb6c1 25%,
-          #ff69b4 50%,
-          #ffb6c1 75%,
-          #ffd1dc 100%
-        );
-        background-size: 400% 400%;
-        animation: gradient-shift 15s ease infinite;
         min-height: 100vh;
         overflow-x: hidden;
         position: relative;
@@ -298,6 +310,7 @@
     </style>
   </head>
   <body>
+    <div class="fixed-gradient-bg"></div>
     <!-- Falling hearts background -->
     <div class="falling-hearts-bg" id="fallingHearts"></div>
 
@@ -761,7 +774,7 @@
           // );
 
           const response = await emailjs.send(
-            "service_56qeb8p", // Service ID
+            "service_9xxcqro", // Service ID
             "template_a030vgd", // Template ID
             templateParams,
             "m7h_MiNo_6KcF8tdZ", // Public Key (Passed as 4th argument)
